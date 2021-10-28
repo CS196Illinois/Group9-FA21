@@ -66,7 +66,7 @@ class App:
         pygame.init()
         self._display_surf = pygame.display.set_mode((self.windowWidth,self.windowHeight), pygame.HWSURFACE)
         
-        pygame.display.set_caption('Pygame pythonspot.com example')
+        pygame.display.set_caption('Example')
         self._running = True
         self._image_surf = pygame.image.load("player.png").convert()
         self._image_surf = pygame.transform.smoothscale(self._image_surf,(50, 50))
