@@ -1,22 +1,6 @@
 from pygame.locals import *
 import pygame
- 
-class Player:
-    x = 44
-    y = 44
-    speed = 0.1
- 
-    def moveRight(self):
-        self.x = self.x + self.speed
- 
-    def moveLeft(self):
-        self.x = self.x - self.speed
- 
-    def moveUp(self):
-        self.y = self.y - self.speed
- 
-    def moveDown(self):
-        self.y = self.y + self.speed
+
  
 class Maze:
     def __init__(self):
@@ -52,14 +36,14 @@ class App:
  
     windowWidth = 800
     windowHeight = 600
-    player = 0
+    
  
     def __init__(self):
         self._running = True
         self._display_surf = None
         self._image_surf = None
         self._block_surf = None
-        self.player = Player()
+        
         self.maze = Maze()
  
     def on_init(self):
@@ -68,8 +52,6 @@ class App:
         
         pygame.display.set_caption('Example')
         self._running = True
-        self._image_surf = pygame.image.load("player.png").convert()
-        self._image_surf = pygame.transform.smoothscale(self._image_surf,(50, 50))
         self._block_surf = pygame.image.load("block.png").convert()
         self._block_surf = pygame.transform.smoothscale(self._block_surf, (50, 50))
  
@@ -82,7 +64,6 @@ class App:
     
     def on_render(self):
         self._display_surf.fill((0,0,0))
-        self._display_surf.blit(self._image_surf,(self.player.x,self.player.y))
         self.maze.draw(self._display_surf, self._block_surf)
         pygame.display.flip()
  
@@ -97,18 +78,6 @@ class App:
             pygame.event.pump()
             keys = pygame.key.get_pressed()
             
-            if (keys[K_RIGHT]):
-                self.player.moveRight()
- 
-            if (keys[K_LEFT]):
-                self.player.moveLeft()
- 
-            if (keys[K_UP]):
-                self.player.moveUp()
- 
-            if (keys[K_DOWN]):
-                self.player.moveDown()
- 
             if (keys[K_ESCAPE]):
                 self._running = False
  
