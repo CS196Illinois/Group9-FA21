@@ -121,16 +121,28 @@ class App:
         self.enemy.y = self.enemy.y + self.enemy.yspeed
 
         if self.enemy.x >= 25 and self.enemy.y >= 100:
-            self.enemy.xspeed = 0.1
+            self.enemy.xspeed = 1
             self.enemy.yspeed = 0
             
             
-        if self.enemy.x == 125:
+        if self.enemy.x >= 125 and self.enemy.y >= 100:
             self.enemy.xspeed = 0
-            self.enemy.yspeed = 0.1
+            self.enemy.yspeed = 1
+
+        if self.enemy.x >= 125  and self.enemy.y >=200:
+            self.enemy.xspeed = 1
+            self.enemy.yspeed = 0
+
+        if self.enemy.x >= 300 and self.enemy.y <= 200:
+            self.enemy.xspeed = 0
+            self.enemy.yspeed = -1
+
+       
+
         
 
        
+        
 
         pygame.display.flip()
     
