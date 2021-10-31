@@ -1,4 +1,5 @@
 import pygame
+import menu
 pygame.font.init()
 
 lives_image = pygame.image.load(r"C:\Users\szsdw\OneDrive\桌面\学习成果\tower defense game\images\game\lives.png")

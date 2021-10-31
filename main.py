@@ -1,69 +1,69 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycha
-
+from _typeshed import Self
+from menu import PlayPauseButton
 import pygame
-from pygame.locals import *
+pygame.font.init()
+
+from pygame.locals import (
+    K_ESCAPE,
+    KEYDOWN,
+    QUIT,
+)
+
+lives_img = pygame.image.load("").convert
+money_img = pygame.image.load("").convert()
+stop_img = pygame.image.load("").convert_alpha()
+begin_img = pygame.image.loag("").convert_alpha()
+class Game():
+    def __init__(self):
+
+        self.width = 1000
+        self.height = 700
+        self.win = pygame.display.set_mode((self.width, self.height))
+        self.enemys = []
+        self.towers = []
+        self.lives = 10
+        self.life_font = pygame.font.Sysfont ("cosmicsans", 60)
+    
+        self.money = 100
+        self.pause = False
+        self.playPauseButton = PlayPauseButton(begin_img, stop_img, 10, self.height - 85)
+    def run(self):
+        self.running = False
+
+   
+    
+    def run(self):
+        self.running = False
+        while not running:
+
+            for event in pygame.event.get():
+                if event.type == KEYDOWN:
+                    if event.key == K_ESCAPE:
+                        running = True
+                elif event.type == QUIT:
+                    running = True
+                # track which mouse buttons were pressed
+                if event.type == pygame.MOUSEBUTTONUP:
+                    newclicks.add(e.button)
+
+                # track the mouse's position
+                if event.type == pygame.MOUSEMOTION:
+                    mouse_pos = event.pos    
+
+    def draw(self):
+        #draw life
+        text = self.life_font.render(str(self.lives), 1, (0, 0, 0))
+        life = pygame.transform.scale(lives_img, (25, 25)) 
+        start = self.width - life.get_width() - 10,
+
+        self.win.blit(text, (start - text.get_width() - 10, 10))
+        self.win.blit(life, (start, 10))
+        
 
 
 
-def game():
 
-    # initialize pygame
-    pygame.init()
+        # draw pauseBotton
+        self.playPauseButton.draw(self.win)
 
-    # create screen
-    size = (800, 600)
-    screen = pygame.display.set_mode(size)
-    pygame.display.set_caption("Tower defense")
-
-    # fill the background with color
-    color = (255, 255, 255)
-    screen.fill(color)
-
-    # input a block
-    start = pygame.image.load(r"C:\Users\szsdw\PycharmProjects\pygame\imageresources\start.jpg").convert()
-    screen.blit(start, (600, 100))
-    screen.blit(start, (600, 180))
-    screen.blit(start, (600, 260))
-
-    img = pygame.image.load(r"C:\Users\szsdw\PycharmProjects\pygame\imageresources\cursor.jpg").convert()
-    # loop
-    running = False
-    right_clicking = True
-    left_clicking = True
-
-    while not running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = True
-        b1, b2, b3 = pygame.mouse.get_pressed()
-        if b1:
-            button = "Left button"
-        elif b2:
-            button = "Middle button"
-        elif b3:
-            button = "Right button"
-        pygame.mouse.set_visible(False)
-        mx, my = pygame.mouse.get_pos()
-
-        screen.blit(img, (mx, my))
-
-        pygame.display.update()
-
-
-if __name__ == "__main__":
-    game()
+a = Game()
