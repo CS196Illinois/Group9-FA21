@@ -10,6 +10,9 @@ PURPLE = (128, 0, 128)
 ORANGE= (255, 165, 0)
 GREY = (128, 128, 128)
 TURQUOISE = (64, 224, 208)
+
+
+
  
 class Maze:
     def __init__(self):
@@ -87,6 +90,7 @@ class App:
         
         self.maze = Maze()
         self.enemy = Enemy()
+        self.clock = pygame.time.Clock()
  
     def on_init(self):
         pygame.init()
@@ -101,6 +105,7 @@ class App:
 
         self._grass_surf = pygame.image.load("grass.png").convert()
         self._grass_surf = pygame.transform.smoothscale(self._grass_surf, (25, 25))
+
         
     def on_event(self, event):
         if event.type == QUIT:
@@ -133,17 +138,32 @@ class App:
             self.enemy.xspeed = 1
             self.enemy.yspeed = 0
 
-        if self.enemy.x >= 300 and self.enemy.y <= 200:
+        if self.enemy.x >= 300 and self.enemy.y <=200:
             self.enemy.xspeed = 0
             self.enemy.yspeed = -1
 
-       
+        if self.enemy.x >= 300 and self.enemy.y <= 125:
+            self.enemy.xspeed = 1
+            self.enemy.yspeed = 0
+
+        if self.enemy.x >= 400 and self.enemy.y >= 125:
+            self.enemy.xspeed = 0
+            self.enemy.yspeed = 1
+
+        if self.enemy.x >= 400 and self.enemy.y >= 350:
+            self.enemy.yspeed = 0
+            self.enemy.xspeed = 1
+
+        #if self.enemy.x 
 
         
 
-       
         
 
+
+        
+
+        self.clock.tick(60)
         pygame.display.flip()
     
         
