@@ -23,18 +23,18 @@ class Array:
        self.maze = [ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
                      1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
                      1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+                     1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+                     1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+                     1,1,1,0,0,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+                     1,1,1,0,0,1,1,1,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,
+                     1,1,1,0,0,1,1,1,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,
+                     0,0,0,0,0,1,1,1,0,0,1,1,1,1,0,0,1,1,1,1,1,1,1,1,
+                     0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,
+                     1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,
                      1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-                     0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-                     1,1,1,1,1,0,1,1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,1,1,
-                     1,1,1,1,1,0,1,1,1,1,1,1,0,1,1,1,0,1,1,1,1,1,1,1,
-                     1,1,1,1,1,0,1,1,1,1,1,1,0,1,1,1,0,1,1,1,1,1,1,1,
-                     1,1,1,1,1,0,0,0,0,0,0,0,0,1,1,1,0,1,1,1,1,1,1,1,
-                     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,
-                     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,
-                     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,
-                     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,
-                     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,
-                     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,
+                     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+                     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+                     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
                      1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,]
 
     def draw(self, window, width):
@@ -44,16 +44,37 @@ class Array:
          for i in range(0, self.M * self.N):
              if self.maze[ x + (y*self.M) ] == 1:
                  
-                path = pygame.draw.rect(window,RED,(x*width, y*width, width, width),2)
+                path = pygame.draw.rect(window,TURQUOISE,(x*width, y*width, width, width),2)
+                
                 
 
              if self.maze[ x + (y*self.M) ] == 0:
-                ground = pygame.draw.rect(window, GREEN, (x*width, y*width, width, width,),2)
+                ground = pygame.draw.rect(window, RED, (x*width, y*width, width, width,),2)
 
              x = x + 1
              if x > self.M-1:
                    x = 0
                    y = y+1
+
+class Enemy:
+    x = 25
+    y = 200
+    xspeed = 0
+    yspeed = 0
+
+
+    def draw(self, image, surface):
+        surface.blit(image, (self.x, self.y))
+      
+        
+    def getPosition(pos, rows, width):
+        gap = width // rows
+        y, x = pos
+
+        row = y // gap
+        col = x // gap
+
+        return row, col
         
 
 class Main:
@@ -64,14 +85,16 @@ class Main:
         self._running = True
         self.windowSurface = None
         self.bgSurf = None
+        self.enemy_block = None
         
         self.array = Array()
-        
+        self.enemy = Enemy()
         self.clock = pygame.time.Clock()
         
     def on_init(self):
         self.running = True
         self.windowSurface = pygame.display.set_mode((self.width, self.height), pygame.HWSURFACE)
+        self.enemy_block = pygame.image.load("enemy.png").convert()
         self.bgSurf = pygame.image.load("map.png").convert()
 
          
@@ -87,6 +110,41 @@ class Main:
         self.windowSurface.blit(self.bgSurf, (0, 0))
         self.array.draw(self.windowSurface, 25)
 
+        self.windowSurface.blit(self.enemy_block,(self.enemy.x,self.enemy.y))
+
+        self.enemy.x = self.enemy.x + self.enemy.xspeed
+        self.enemy.y = self.enemy.y + self.enemy.yspeed
+
+        if self.enemy.x >= 25 and self.enemy.y >= 200:
+            self.enemy.xspeed = 1
+            self.enemy.yspeed = 0
+            
+            
+        if self.enemy.x >= 100 and self.enemy.y >= 200:
+            self.enemy.xspeed = 0
+            self.enemy.yspeed = -1
+
+        if self.enemy.x >= 100  and self.enemy.y <=100:
+            self.enemy.xspeed = 1
+            self.enemy.yspeed = 0
+
+        if self.enemy.x >= 200 and self.enemy.y >=100:
+            self.enemy.xspeed = 0
+            self.enemy.yspeed = 1
+
+        if self.enemy.x >= 200 and self.enemy.y >= 250:
+            self.enemy.xspeed = 1
+            self.enemy.yspeed = 0
+
+        if self.enemy.x >= 375 and self.enemy.y <= 250:
+            self.enemy.xspeed = 0
+            self.enemy.yspeed = -1
+
+        if self.enemy.x >= 375 and self.enemy.y <= 175:
+            self.enemy.xspeed = 1;
+            self.enemy.yspeed = 0;
+
+        
         self.clock.tick(60)
         pygame.display.flip()
 
