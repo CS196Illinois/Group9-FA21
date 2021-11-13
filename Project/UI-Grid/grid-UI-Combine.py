@@ -75,6 +75,37 @@ class Enemy:
         col = x // gap
 
         return row, col
+
+    def path(self):
+        if self.x >= 25 and self.y >= 200:
+            self.xspeed = 1
+            self.yspeed = 0
+            
+            
+        if self.x >= 100 and self.y >= 200:
+            self.xspeed = 0
+            self.yspeed = -1
+
+        if self.x >= 100  and self.y <=100:
+            self.xspeed = 1
+            self.yspeed = 0
+
+        if self.x >= 200 and self.y >=100:
+            self.xspeed = 0
+            self.yspeed = 1
+
+        if self.x >= 200 and self.y >= 250:
+            self.xspeed = 1
+            self.yspeed = 0
+
+        if self.x >= 375 and self.y <= 250:
+            self.xspeed = 0
+            self.yspeed = -1
+
+        if self.x >= 375 and self.y <= 175:
+            self.xspeed = 1;
+            self.yspeed = 0;
+        
         
 
 class Main:
@@ -115,34 +146,7 @@ class Main:
         self.enemy.x = self.enemy.x + self.enemy.xspeed
         self.enemy.y = self.enemy.y + self.enemy.yspeed
 
-        if self.enemy.x >= 25 and self.enemy.y >= 200:
-            self.enemy.xspeed = 1
-            self.enemy.yspeed = 0
-            
-            
-        if self.enemy.x >= 100 and self.enemy.y >= 200:
-            self.enemy.xspeed = 0
-            self.enemy.yspeed = -1
-
-        if self.enemy.x >= 100  and self.enemy.y <=100:
-            self.enemy.xspeed = 1
-            self.enemy.yspeed = 0
-
-        if self.enemy.x >= 200 and self.enemy.y >=100:
-            self.enemy.xspeed = 0
-            self.enemy.yspeed = 1
-
-        if self.enemy.x >= 200 and self.enemy.y >= 250:
-            self.enemy.xspeed = 1
-            self.enemy.yspeed = 0
-
-        if self.enemy.x >= 375 and self.enemy.y <= 250:
-            self.enemy.xspeed = 0
-            self.enemy.yspeed = -1
-
-        if self.enemy.x >= 375 and self.enemy.y <= 175:
-            self.enemy.xspeed = 1;
-            self.enemy.yspeed = 0;
+        self.enemy.path()
 
         
         self.clock.tick(60)
