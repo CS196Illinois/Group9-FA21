@@ -1,4 +1,4 @@
-class tower:
+class Tower:
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -10,6 +10,7 @@ class tower:
         self.menu = False
         self.tower_image = []
         self.level = 1
+        self.upgradeprice 
 
     def draw(self, screen):
         image =  self.tower_image[self.level]
@@ -26,7 +27,12 @@ class tower:
         pass
 
     def upgrade(self):
-        pass
+        self.level += 1
+    
+    def upgradeprice(self):
+        return self.price[self.level + 1]
 
-    def move(self):
-        pass
+    def move(self, x, y):
+        self.x = x
+        self.y = y
+
