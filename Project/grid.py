@@ -1,5 +1,7 @@
-from pygame.locals import *
 import pygame
+from pygame.locals import *
+import os
+
 
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
@@ -16,6 +18,7 @@ class Array:
     def __init__(self):
        self.rows = 16
        self.cols = 24
+       self.tower = Tower()
        
        path = None
        ground = None
@@ -29,7 +32,7 @@ class Array:
                      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -40,9 +43,10 @@ class Array:
        print(self.maze)
                     
 
-    def draw(self, window, width):
+    def draw(self, window):
          x = 0
          y = 0
+         width = 25
 
          for row in self.maze:
              for col in row:
@@ -50,10 +54,13 @@ class Array:
                      pygame.draw.rect(window, GREEN,(x, y, width, width), 2)
                  if col == 0:
                      pygame.draw.rect(window, RED,(x, y, width, width), 2)
+                 if col == 2:
+                     self.tower.draw(window, x, y)
                  x = x + width
              y = y + width
              x = 0
 
+#________________________________________________________________________________________________________________________________________________________________________________________________________________
 class Enemy:
     x = 25
     y = 200
@@ -103,6 +110,36 @@ class Enemy:
         if self.x >= 375 and self.y <= 175:
             self.xspeed = 1;
             self.yspeed = 0;
-        
+#________________________________________________________________________________________________________________________________________________________________________________________________________________
+
+class Tower:
+    def __init__(self):
+        self.width = 50
+        self.cost = [0, 0, 0]
+        self.price = [0, 0, 0]
+        self.selected = False
+        self.menu = False
+        self.level = 1
+        self.tower1 = pygame.image.load(os.path.join("game_assets\game\tank1.png"))
+        self.tower2 = pygame.image.load(os.path.join("game_assets\game\tank2.png"))
+        self.tower3 = pygame.image.load(os.path.join("game_assets\game\tank3.png"))
+        self.tower_image = [self.tower1, self.tower2, self.tower3]
+    def draw(self, screen, x, y):
+        image =  self.tower_image[self.level]
+        screen.blit(image, (x, y))
+    
+    def click(self, X, Y):
+        if X <= self.x + self.length and X >= self.x:
+            if Y <= self.y + self.height and Y >= self.y:
+                return True
+        return False
         
 
+    def sell(self):
+        pass
+
+    def upgrade(self):
+        pass
+
+    def move(self):
+        pass

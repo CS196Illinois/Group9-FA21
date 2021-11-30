@@ -4,6 +4,8 @@ import os
 from menu import HorizontalMenu
 from grid import Array
 from grid import Enemy
+from grid import Tower
+
 
 
 
@@ -63,7 +65,7 @@ class Game():
 
     def draw(self):
         self.screen.blit(self.map, (0,0))
-        self.array.draw(self.screen, 25)
+        self.array.draw(self.screen,)
 
         # draw tower
 
