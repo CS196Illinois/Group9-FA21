@@ -1,8 +1,6 @@
 import os
 class Tower:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+    def __init__(self):
         self.width = 50
         self.cost = [0, 0, 0]
         self.price = [0, 0, 0]
@@ -14,9 +12,9 @@ class Tower:
         self.tower2 = pygame.image.load(os.path.join("game_assets\game\tank2.png"))
         self.tower3 = pygame.image.load(os.path.join("game_assets\game\tank3.png"))
 
-    def draw(self, screen):
+    def draw(self, screen, x, y):
         image =  self.tower_image[self.level]
-        screen.blit(image, (self.x - image.getlength()/ 2, self.y - image.get_height()/ 2))
+        screen.blit(image, (x, y))
     
     def click(self, X, Y):
         if X <= self.x + self.length and X >= self.x:

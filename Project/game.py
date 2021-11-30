@@ -4,7 +4,7 @@ import os
 from menu import HorizontalMenu
 from grid import Array
 from grid import Enemy
-from grid import Tower
+
 
 
 
@@ -14,6 +14,7 @@ money_image = pygame.image.load(os.path.join("game_assets\game\Star.png"))
 side_image = pygame.image.load(os.path.join("game_assets\game\side.png"))
 icon_image = pygame.image.load(os.path.join("game_assets\game\icon.png"))
 enemy_sprite = pygame.image.load(os.path.join("game_assets\game\enemy.png"))
+
 
 
 class Game():
@@ -36,26 +37,27 @@ class Game():
         self.menu.add_btn(icon_image, "buy_archer3", 1000)
         self.menu.add_btn(icon_image, "buy_archer4", 1000)
         self.clock = pygame.time.Clock()
+        
 
     
     def run(self):
         running = True
+        
 
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
 
-                pos = pygame.mouse.get_pos()
+                
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     # side menu
-                    side_menu_button = self.menu.get_clicked(pos[0], pos[1])
+                    self.array.setValue(2)
+                    print(self.array)
                     
-                    if side_menu_button:
-                        pass
                     
-                    btn_clicked = None
+                   
                    
 
 
@@ -64,10 +66,14 @@ class Game():
         pygame.quit()
 
     def draw(self):
+
         self.screen.blit(self.map, (0,0))
         self.array.draw(self.screen,)
 
         # draw tower
+        
+    
+        
 
         # draw enemy
         self.screen.blit(enemy_sprite,(self.enemy.x, self.enemy.y))
