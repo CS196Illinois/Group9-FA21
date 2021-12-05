@@ -2,8 +2,8 @@ import pygame
 import os
 
 pygame.font.init()
-star = pygame.transform.scale(pygame.image.load(os.path.join("game_assets\game\Star.png")), (50, 50)) 
-star1 = pygame.transform.scale(pygame.image.load(os.path.join("game_assets\game\Star.png")),(20, 20))
+star = pygame.transform.scale(pygame.image.load(os.path.join("Project\game_assets\game\Star.png")), (50, 50)) 
+star1 = pygame.transform.scale(pygame.image.load(os.path.join("Project\game_assets\game\Star.png")),(20, 20))
 
 class Button:    
     def __init__(self, menu, img, name):

@@ -4,18 +4,20 @@ import os
 from menu import HorizontalMenu
 from grid import Array
 from grid import Enemy
+from tower.archertower import ArcherTowerLong, ArcherTowerShort
+from grid import Enemy
+import time
+import random
 
-
-
-lives_image = pygame.image.load(os.path.join("game_assets\game\lives.png"))
-money_image = pygame.image.load(os.path.join("game_assets\game\Star.png"))
-side_image = pygame.image.load(os.path.join("game_assets\game\side.png"))
-icon_image = pygame.image.load(os.path.join("game_assets\game\icon.png"))
-enemy_sprite = pygame.image.load(os.path.join("game_assets\game\enemy.png"))
+lives_image = pygame.image.load(os.path.join("Project\game_assets\game\lives.png"))
+money_image = pygame.image.load(os.path.join("Project\game_assets\game\Star.png"))
+side_image = pygame.image.load(os.path.join("Project\game_assets\game\side.png"))
+icon_image = pygame.image.load(os.path.join("Project\game_assets\game\icon.png"))
+enemy_sprite = pygame.image.load(os.path.join("Project\game_assets\game\enemy.png"))
 
 
 class Game():
-    def __init__(self):
+    def __init__(self, screen):
         self.width = 600
         self.height = 400
         self.screen = pygame.display.set_mode((self.width , self.height))
@@ -23,7 +25,7 @@ class Game():
         self.tower = []
         self.lives = 10
         self.money = 100
-        self.map = pygame.image.load(os.path.join("game_assets\game\Map.png"))
+        self.map = pygame.image.load(os.path.join("Project\game_assets\game\Map.png"))
         self.array = Array()
         self.enemy = Enemy()
         self.clicks = []
@@ -34,12 +36,20 @@ class Game():
         self.menu.add_btn(icon_image, "buy_archer3", 1000)
         self.menu.add_btn(icon_image, "buy_archer4", 1000)
         self.clock = pygame.time.Clock()
+        self.selected_tower = None
+        self.current_wave = waves[self.wave][:]
+        self.pause = True
 
-    
+    def generation_enemy(self):
+        if sum(self.current_wave) == 0:
+            if len(self.enemy) == 0:
+                self.current_wave = waves[self.wave]
+
     def run(self):
         running = True
-
+        clock = pygame.time.Clock()
         while running:
+            clock.tick(500)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -93,6 +103,9 @@ class Game():
         self.menu.draw(self.screen)
         self.clock.tick(60)
         pygame.display.update()
+
+        # draw selected tower
+        if self
  
 
 
