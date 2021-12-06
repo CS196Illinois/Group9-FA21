@@ -78,26 +78,26 @@ class Array:
 #________________________________________________________________________________________________________________________________________________________________________________________________________________
 import os
 class Enemy:
-    x = 25
-    y = 200
+    x = None
+    y = None
     xspeed = 0
     yspeed = 0
+    health = 100
+
+
+    def __init__(self, positionX, positionY):
+        self.x = positionX
+        self.y = positionY
 
 
     def draw(self, image, surface):
         surface.blit(image, (self.x, self.y))
       
         
-    def getPosition(pos, rows, width):
-        gap = width // rows
-        y, x = pos
-
-        row = y // gap
-        col = x // gap
-
-        return row, col
 
     def path(self):
+        self.x = self.x + self.xspeed
+        self.y = self.y + self.yspeed
         if self.x >= 25 and self.y >= 200:
             self.xspeed = 1
             self.yspeed = 0

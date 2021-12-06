@@ -9,11 +9,11 @@ from grid import Enemy
 
 
 
-lives_image = pygame.image.load(os.path.join("game_assets\game\lives.png"))
-money_image = pygame.image.load(os.path.join("game_assets\game\Star.png"))
-side_image = pygame.image.load(os.path.join("game_assets\game\side.png"))
-icon_image = pygame.image.load(os.path.join("game_assets\game\icon.png"))
-enemy_sprite = pygame.image.load(os.path.join("game_assets\game\enemy.png"))
+lives_image = pygame.image.load(os.path.join("game_assets", "game", "lives.png"))
+money_image = pygame.image.load(os.path.join("game_assets", "game", "Star.png"))
+side_image = pygame.image.load(os.path.join("game_assets", "game", "side.png"))
+icon_image = pygame.image.load(os.path.join("game_assets", "game", "icon.png"))
+enemy_sprite = pygame.image.load(os.path.join("game_assets", "game", "enemy.png"))
 
 
 
@@ -22,13 +22,16 @@ class Game():
         self.width = 600
         self.height = 400
         self.screen = pygame.display.set_mode((self.width , self.height))
+        self.count = 0;
+
         self.enemy = []
+    
+        
         self.tower = []
         self.lives = 10
         self.money = 100
         self.map = pygame.image.load(os.path.join("game_assets\game\Map.png"))
         self.array = Array()
-        self.enemy = Enemy()
         self.clicks = []
         self.lifefont = pygame.font.SysFont("comicsans", 30)
         self.menu = HorizontalMenu(self.width - side_image.get_width() + 70, 250, side_image)
@@ -54,21 +57,22 @@ class Game():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     # side menu
                     self.array.setValue(2)
-                    print(self.array)
-                    
-                    
-                   
-                   
 
+                    print(self.array)
+
+            if self.lives == 0:
+                running = False
 
             self.draw()
+        
 
         pygame.quit()
+        
 
     def draw(self):
 
         self.screen.blit(self.map, (0,0))
-        self.array.draw(self.screen,)
+        self.array.draw(self.screen)
 
         # draw tower
         
@@ -76,12 +80,29 @@ class Game():
         
 
         # draw enemy
-        self.screen.blit(enemy_sprite,(self.enemy.x, self.enemy.y))
-        self.enemy.x = self.enemy.x + self.enemy.xspeed
-        self.enemy.y = self.enemy.y + self.enemy.yspeed
 
-        self.enemy.path()
-       
+        if self.count < 100:
+            self.count = self.count + 1
+
+        if self.count >= 100:
+            self.count = 0
+        print(self.count)
+
+        if (self.count == 99):     
+            self.enemy.append(Enemy(25, 200))
+            
+
+        for enemy in self.enemy:
+            enemy.x = enemy.x + enemy.xspeed
+            self.y = enemy.y + enemy.yspeed
+            enemy.draw(enemy_sprite, self.screen)
+
+            if enemy.x >= self.width:
+                self.enemy.remove(enemy)
+                self.lives -= 1
+
+            enemy.path()
+
 
         # draw lives
         text = self.lifefont.render(str(self.lives), 1, (255,255,255))
