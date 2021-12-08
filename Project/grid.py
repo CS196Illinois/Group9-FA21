@@ -21,6 +21,7 @@ class Array:
        self.rows = 16
        self.cols = 24
        self.tower = Tower()
+       self.towerPosition = [[]]
        
        path = None
        ground = None
@@ -32,7 +33,7 @@ class Array:
                      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -58,6 +59,7 @@ class Array:
                      pygame.draw.rect(window, RED,(x, y, width, width), 2)
                  if col == 2:
                      self.tower.draw(window, x, y)
+
                  x = x + width
              y = y + width
              x = 0
@@ -68,13 +70,16 @@ class Array:
         arrayPosX = x//25
         arrayPosY = y//25
         print(arrayPosX, arrayPosY)
-        print(self.maze)
+        print(self.maze) 
+    
 
         self.maze[arrayPosY][arrayPosX] = value
+        self.towerPosition.append([arrayPosX * 25, arrayPosY * 25])
+
+    def getPosition(self):
+        return self.towerPosition;
+
         
-
-
-
 #________________________________________________________________________________________________________________________________________________________________________________________________________________
 import os
 class Enemy:
@@ -148,6 +153,7 @@ class Tower:
         self.menu = False
         self.level = 0
         self.tower_image = [tower1, tower2, tower3]
+
     def draw(self, screen, x, y):
         image =  self.tower_image[self.level]
         screen.blit(image, (x, y))
@@ -167,3 +173,6 @@ class Tower:
 
     def move(self):
         pass
+
+
+

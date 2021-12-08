@@ -56,8 +56,9 @@ class Game():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     # side menu
                     self.array.setValue(2)
+                    
 
-                    print(self.array)
+                    print(self.array.getPosition())
 
             #if self.lives == 0:
                # running = False
@@ -110,7 +111,7 @@ class Game():
             self.waveCounter = 0
             self.waveState = 0
 
-        print(self.waveCounter, self.waveState)
+        
          
 #draw each enemy in list
         for enemy in self.enemy:
@@ -126,6 +127,7 @@ class Game():
             enemy.draw(enemy_sprite, self.screen)
 
 
+
     
             
 #base health mechanism
@@ -136,6 +138,7 @@ class Game():
             if enemy.health <= 0:
                 self.enemy.remove(enemy)
                 self.money += enemy.money
+
 #path              
             enemy.path()
 
@@ -152,6 +155,8 @@ class Game():
         money = pygame.transform.scale(money_image, (30, 30))
         self.screen.blit(moneytext, ((place - 40), 60))
         self.screen.blit(money, (place + 5, 55))
+
+ 
         
 
         # draw menu
