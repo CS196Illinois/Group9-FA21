@@ -4,7 +4,6 @@ import os
 pygame.font.init()
 star = pygame.transform.scale(pygame.image.load(os.path.join("Project\game_assets\game\Star.png")), (50, 50)) 
 star1 = pygame.transform.scale(pygame.image.load(os.path.join("Project\game_assets\game\Star.png")),(20, 20))
-
 class Button:    
     def __init__(self, menu, img, name):
         self.name = name
@@ -29,8 +28,24 @@ class Button:
     def update(self):
 
         self.x = self.menu.x - 50
-        self.x = self.menu.y - 110                    
+        self.x = self.menu.y - 110    
 
+class PlayPauseButton(Button):
+    def __init__(self, play_img, pause_img, x, y):
+        self.img = play_img
+        self.play = play_img
+        self.pause = pause_img
+        self.x = x
+        self.y = y
+        self.width = self.img.get_width()
+        self.height = self.img.get_height()              
+        self.paused = True
+    def draw(self, screen):
+        if self.paused:
+            screen.blit(self.play, (self.x, self.y))
+        else:
+            screen.blit(self.pause, (self.x, self.y))
+            
 class VerticalButton(Button) :
 
     def __init__(self, x, y, img, name, cost):

@@ -1,23 +1,23 @@
 import pygame
-pygame.font.init()
 import os
+from tower import Tower
+from pygame import key
 from menu import HorizontalMenu
 from grid import Array
 from grid import Enemy
-from tower.archertower import ArcherTowerLong, ArcherTowerShort
-from grid import Enemy
 import time
 import random
+import config
+import bullet
+pygame.font.init()
 
 lives_image = pygame.image.load(os.path.join("Project\game_assets\game\lives.png"))
 money_image = pygame.image.load(os.path.join("Project\game_assets\game\Star.png"))
 side_image = pygame.image.load(os.path.join("Project\game_assets\game\side.png"))
 icon_image = pygame.image.load(os.path.join("Project\game_assets\game\icon.png"))
 enemy_sprite = pygame.image.load(os.path.join("Project\game_assets\game\enemy.png"))
-
-
-class Game():
-    def __init__(self, screen):
+class Game(): 
+    def __init__(self):
         self.width = 600
         self.height = 400
         self.screen = pygame.display.set_mode((self.width , self.height))
@@ -37,19 +37,17 @@ class Game():
         self.menu.add_btn(icon_image, "buy_archer4", 1000)
         self.clock = pygame.time.Clock()
         self.selected_tower = None
-        self.current_wave = waves[self.wave][:]
         self.pause = True
-
-    def generation_enemy(self):
-        if sum(self.current_wave) == 0:
-            if len(self.enemy) == 0:
-                self.current_wave = waves[self.wave]
-
+        
     def run(self):
         running = True
         clock = pygame.time.Clock()
+        keys = set()
+        mouse_pos = (0, 0)
         while running:
             clock.tick(500)
+            newkeys = set()
+            newclicks = set()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -62,10 +60,30 @@ class Game():
                     
                     if side_menu_button:
                         pass
-                    
-                    btn_clicked = None
-                   
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    return
 
+                # did the user just press the escape key?
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                    return
+
+                # track which keys are currently set
+                if event.type == pygame.KEYDOWN:
+                    keys.add(event.key)
+                    newkeys.add(event.key)
+                if event.type == pygame.KEYUP:
+                    keys.discard(event.key)
+
+                # track which mouse buttons were pressed
+                if event.type == pygame.MOUSEBUTTONUP:
+                    newclicks.add(event.button)
+
+                # track the mouse's position
+                if event.type == pygame.MOUSEMOTION:
+                    mouse_pos = event.pos
+    
 
             self.draw()
 
@@ -75,14 +93,10 @@ class Game():
         self.screen.blit(self.map, (0,0))
         self.array.draw(self.screen, 25)
 
-        # draw tower
-
         # draw enemy
         self.screen.blit(enemy_sprite,(self.enemy.x, self.enemy.y))
         self.enemy.x = self.enemy.x + self.enemy.xspeed
         self.enemy.y = self.enemy.y + self.enemy.yspeed
-
-        self.enemy.path()
        
 
         # draw lives
@@ -98,16 +112,24 @@ class Game():
         self.screen.blit(moneytext, ((place - 40), 60))
         self.screen.blit(money, (place + 5, 55))
         
-
         # draw menu
         self.menu.draw(self.screen)
         self.clock.tick(60)
         pygame.display.update()
 
-        # draw selected tower
-        if self
- 
+        
+        if self.selected_tower:
+            self.selected_tower.draw(self.screen)
+        
+        
+        for t in self.attack_towers:
+            t.draw(self.screen)
 
+       
+        self.playPauseButton.draw(self.screen)
 
+        
+        self.screen.blit(self.image, self.position)
 g = Game()
-g.run()
+g.run
+
