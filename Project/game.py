@@ -54,15 +54,19 @@ class Game():
 
                 
 
-                if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.type == pygame.MOUSEBUTTONDOWN and self.money >= 50:
                     # side menu
                     self.array.setValue(2)
                     print(self.array.getPosition())
+                    self.money -= 50
                     
 
 
-            #if self.lives == 0:
-               # running = False
+            if self.lives == 0:
+                running = False
+
+            if len(self.enemy) == 0 and self.waveState == 2:
+                running = False
 
             self.draw()
         
@@ -149,13 +153,13 @@ class Game():
             for i in self.array.getPosition():
                 
                 dist = math.sqrt((i[0]- enemy.x)**2 + (i[1]-enemy.y)**2)
-                if (dist < 70):
-                    enemy.health -= 50
+                if (dist < 100):
+                    enemy.health -= 100
 
                 if enemy.health <= 0:
                     self.enemy.remove(enemy)
                     self.money += enemy.money
-                print(enemy.health)
+
                     
 
                 
