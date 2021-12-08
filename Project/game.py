@@ -1,6 +1,7 @@
 import pygame
 pygame.font.init()
 import os
+import math
 from menu import HorizontalMenu
 from grid import Array
 from grid import Enemy
@@ -49,16 +50,16 @@ class Game():
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    running = False
+                    runnisng = False
 
                 
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     # side menu
                     self.array.setValue(2)
+                    print(self.array.getPosition())
                     
 
-                    print(self.array.getPosition())
 
             #if self.lives == 0:
                # running = False
@@ -135,12 +136,29 @@ class Game():
                 self.enemy.remove(enemy)
                 self.lives -= 1
 #enemy death mechanism
-            if enemy.health <= 0:
-                self.enemy.remove(enemy)
-                self.money += enemy.money
+        
+
+        
+
+            
+                    
 
 #path              
             enemy.path()
+
+            for i in self.array.getPosition():
+                
+                dist = math.sqrt((i[0]- enemy.x)**2 + (i[1]-enemy.y)**2)
+                if (dist < 70):
+                    enemy.health -= 50
+
+                if enemy.health <= 0:
+                    self.enemy.remove(enemy)
+                    self.money += enemy.money
+                print(enemy.health)
+                    
+
+                
 
 
         # draw lives

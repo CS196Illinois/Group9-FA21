@@ -21,7 +21,7 @@ class Array:
        self.rows = 16
        self.cols = 24
        self.tower = Tower()
-       self.towerPosition = [[]]
+       self.towerPosition = []
        
        path = None
        ground = None
@@ -69,8 +69,7 @@ class Array:
                     
         arrayPosX = x//25
         arrayPosY = y//25
-        print(arrayPosX, arrayPosY)
-        print(self.maze) 
+    
     
 
         self.maze[arrayPosY][arrayPosX] = value
@@ -141,7 +140,7 @@ class Enemy:
             self.yspeed = 0;
 
     def takeDamage(self, value):
-        self.enemy -= value;
+        self.health -= value;
 #________________________________________________________________________________________________________________________________________________________________________________________________________________
 
 class Tower:
