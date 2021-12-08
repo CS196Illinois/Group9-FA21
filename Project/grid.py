@@ -82,12 +82,20 @@ class Enemy:
     y = None
     xspeed = 0
     yspeed = 0
-    health = 100
+    health = None
+    money = None
+    speedIncrease = None
+             
 
 
     def __init__(self, positionX, positionY):
         self.x = positionX
         self.y = positionY
+
+    def setValue(self, h, m, s):
+        self.health = h
+        self.money = m
+        self.speedIncrease = s
 
 
     def draw(self, image, surface):
@@ -96,8 +104,8 @@ class Enemy:
         
 
     def path(self):
-        self.x = self.x + self.xspeed
-        self.y = self.y + self.yspeed
+        #self.x = self.x + (self.xspeed * self.speedIncrease)
+        #self.y = self.y + (self.yspeed * self.speedIncrease)
         if self.x >= 25 and self.y >= 200:
             self.xspeed = 1
             self.yspeed = 0
@@ -111,7 +119,7 @@ class Enemy:
             self.xspeed = 1
             self.yspeed = 0
 
-        if self.x >= 200 and self.y >=100:
+        if self.x >= 200 and self.y >= 100:
             self.xspeed = 0
             self.yspeed = 1
 
@@ -126,6 +134,9 @@ class Enemy:
         if self.x >= 375 and self.y <= 175:
             self.xspeed = 1;
             self.yspeed = 0;
+
+    def takeDamage(self, value):
+        self.enemy -= value;
 #________________________________________________________________________________________________________________________________________________________________________________________________________________
 
 class Tower:

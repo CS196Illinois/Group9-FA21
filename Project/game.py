@@ -5,16 +5,11 @@ from menu import HorizontalMenu
 from grid import Array
 from grid import Enemy
 
-
-
-
-
 lives_image = pygame.image.load(os.path.join("game_assets", "game", "lives.png"))
 money_image = pygame.image.load(os.path.join("game_assets", "game", "Star.png"))
 side_image = pygame.image.load(os.path.join("game_assets", "game", "side.png"))
 icon_image = pygame.image.load(os.path.join("game_assets", "game", "icon.png"))
 enemy_sprite = pygame.image.load(os.path.join("game_assets", "game", "enemy.png"))
-
 
 
 class Game():
@@ -30,7 +25,7 @@ class Game():
         self.tower = []
         self.lives = 10
         self.money = 100
-        self.map = pygame.image.load(os.path.join("game_assets\game\Map.png"))
+        self.map = pygame.image.load(os.path.join("game_assets", "game", "Map.png"))
         self.array = Array()
         self.clicks = []
         self.lifefont = pygame.font.SysFont("comicsans", 30)
@@ -40,6 +35,10 @@ class Game():
         self.menu.add_btn(icon_image, "buy_archer3", 1000)
         self.menu.add_btn(icon_image, "buy_archer4", 1000)
         self.clock = pygame.time.Clock()
+
+        self.waveCounter = 0
+        self.waveState = 0
+        self.interval = 0
         
 
     
@@ -60,8 +59,8 @@ class Game():
 
                     print(self.array)
 
-            if self.lives == 0:
-                running = False
+            #if self.lives == 0:
+               # running = False
 
             self.draw()
         
@@ -80,27 +79,64 @@ class Game():
         
 
         # draw enemy
-
+#track number of enemy
         if self.count < 100:
             self.count = self.count + 1
 
         if self.count >= 100:
             self.count = 0
-        print(self.count)
-
-        if (self.count == 99):     
+# wave spawn
+        if (self.count == 99 and self.waveCounter != 10 and self.waveState == 0):     
             self.enemy.append(Enemy(25, 200))
-            
+            self.waveCounter += 1
 
+        if (self.count == 99 and self.waveCounter != 15 and self.waveState == 1):
+            self.enemy.append(Enemy(25, 200))
+            self.waveCounter += 1
+
+        if (self.count == 99 and self.waveCounter != 20 and self.waveState == 2):
+            self.enemy.append(Enemy(25, 200))
+            self.waveCounter += 1
+            
+        if self.waveCounter >= 10 and self.waveState == 0 and len(self.enemy) == 0:
+            self.waveCounter = 0
+            self.waveState = 1
+
+        if self.waveCounter >= 15 and self.waveState == 1 and len(self.enemy) == 0:
+            self.waveCounter = 0
+            self.waveState = 2
+
+        if self.waveCounter >= 20 and self.waveState == 2 and len(self.enemy) == 0:
+            self.waveCounter = 0
+            self.waveState = 0
+
+        print(self.waveCounter, self.waveState)
+         
+#draw each enemy in list
         for enemy in self.enemy:
-            enemy.x = enemy.x + enemy.xspeed
-            self.y = enemy.y + enemy.yspeed
+            if self.waveState == 0:
+                enemy.setValue(100, 10, 1)
+            if self.waveState == 1:
+                enemy.setValue(150, 15, 1.25)
+            if self.waveState == 2:
+                enemy.setValue(200, 20, 2.5)
+
+            enemy.x = enemy.x + (enemy.xspeed * enemy.speedIncrease)
+            enemy.y = enemy.y + (enemy.yspeed * enemy.speedIncrease)
             enemy.draw(enemy_sprite, self.screen)
 
+
+    
+            
+#base health mechanism
             if enemy.x >= self.width:
                 self.enemy.remove(enemy)
                 self.lives -= 1
-
+#enemy death mechanism
+            if enemy.health <= 0:
+                self.enemy.remove(enemy)
+                self.money += enemy.money
+#path              
             enemy.path()
 
 
