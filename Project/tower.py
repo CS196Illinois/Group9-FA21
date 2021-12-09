@@ -1,19 +1,20 @@
-class tower:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        self.length = 0
-        self.height = 0
+import os
+class Tower:
+    def __init__(self):
+        self.width = 50
         self.cost = [0, 0, 0]
         self.price = [0, 0, 0]
         self.selected = False
         self.menu = False
-        self.tower_image = []
+        self.tower_image = [self.tower1, self.tower2, self.tower3]
         self.level = 1
+        self.tower1 = pygame.image.load(os.path.join("game_assets\game\tank1.png"))
+        self.tower2 = pygame.image.load(os.path.join("game_assets\game\tank2.png"))
+        self.tower3 = pygame.image.load(os.path.join("game_assets\game\tank3.png"))
 
-    def draw(self, screen):
+    def draw(self, screen, x, y):
         image =  self.tower_image[self.level]
-        screen.blit(image, (self.x - image.getlength()/ 2, self.y - image.get_height()/ 2))
+        screen.blit(image, (x, y))
     
     def click(self, X, Y):
         if X <= self.x + self.length and X >= self.x:

@@ -1,17 +1,16 @@
 import pygame
 pygame.font.init()
 import os
+import math
 from menu import HorizontalMenu
 from grid import Array
 from grid import Enemy
 
-
-
-lives_image = pygame.image.load(os.path.join("game_assets\game\lives.png"))
-money_image = pygame.image.load(os.path.join("game_assets\game\Star.png"))
-side_image = pygame.image.load(os.path.join("game_assets\game\side.png"))
-icon_image = pygame.image.load(os.path.join("game_assets\game\icon.png"))
-enemy_sprite = pygame.image.load(os.path.join("game_assets\game\enemy.png"))
+lives_image = pygame.image.load(os.path.join("game_assets", "game", "lives.png"))
+money_image = pygame.image.load(os.path.join("game_assets", "game", "Star.png"))
+side_image = pygame.image.load(os.path.join("game_assets", "game", "side.png"))
+icon_image = pygame.image.load(os.path.join("game_assets", "game", "icon.png"))
+enemy_sprite = pygame.image.load(os.path.join("game_assets", "game", "enemy.png"))
 
 
 class Game():
@@ -19,13 +18,16 @@ class Game():
         self.width = 600
         self.height = 400
         self.screen = pygame.display.set_mode((self.width , self.height))
+        self.count = 0;
+
         self.enemy = []
+    
+        
         self.tower = []
         self.lives = 10
         self.money = 100
-        self.map = pygame.image.load(os.path.join("game_assets\game\Map.png"))
+        self.map = pygame.image.load(os.path.join("game_assets", "game", "Map.png"))
         self.array = Array()
-        self.enemy = Enemy()
         self.clicks = []
         self.lifefont = pygame.font.SysFont("comicsans", 30)
         self.menu = HorizontalMenu(self.width - side_image.get_width() + 70, 250, side_image)
@@ -35,45 +37,133 @@ class Game():
         self.menu.add_btn(icon_image, "buy_archer4", 1000)
         self.clock = pygame.time.Clock()
 
+        self.waveCounter = 0
+        self.waveState = 0
+        self.interval = 0
+        
+
     
     def run(self):
         running = True
+        
 
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    running = False
+                    runnisng = False
 
-                pos = pygame.mouse.get_pos()
+                
 
-                if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.type == pygame.MOUSEBUTTONDOWN and self.money >= 50:
                     # side menu
-                    side_menu_button = self.menu.get_clicked(pos[0], pos[1])
+                    self.array.setValue(2)
+                    print(self.array.getPosition())
+                    self.money -= 50
                     
-                    if side_menu_button:
-                        pass
-                    
-                    btn_clicked = None
-                   
 
+
+            if self.lives == 0:
+                running = False
+
+            if len(self.enemy) == 0 and self.waveState == 2:
+                running = False
 
             self.draw()
+        
 
         pygame.quit()
+        
 
     def draw(self):
+
         self.screen.blit(self.map, (0,0))
-        self.array.draw(self.screen, 25)
+        self.array.draw(self.screen)
 
         # draw tower
+        
+    
+        
 
         # draw enemy
-        self.screen.blit(enemy_sprite,(self.enemy.x, self.enemy.y))
-        self.enemy.x = self.enemy.x + self.enemy.xspeed
-        self.enemy.y = self.enemy.y + self.enemy.yspeed
+#track number of enemy
+        if self.count < 100:
+            self.count = self.count + 1
 
-        self.enemy.path()
-       
+        if self.count >= 100:
+            self.count = 0
+# wave spawn
+        if (self.count == 99 and self.waveCounter != 10 and self.waveState == 0):     
+            self.enemy.append(Enemy(25, 200))
+            self.waveCounter += 1
+
+        if (self.count == 99 and self.waveCounter != 15 and self.waveState == 1):
+            self.enemy.append(Enemy(25, 200))
+            self.waveCounter += 1
+
+        if (self.count == 99 and self.waveCounter != 20 and self.waveState == 2):
+            self.enemy.append(Enemy(25, 200))
+            self.waveCounter += 1
+            
+        if self.waveCounter >= 10 and self.waveState == 0 and len(self.enemy) == 0:
+            self.waveCounter = 0
+            self.waveState = 1
+
+        if self.waveCounter >= 15 and self.waveState == 1 and len(self.enemy) == 0:
+            self.waveCounter = 0
+            self.waveState = 2
+
+        if self.waveCounter >= 20 and self.waveState == 2 and len(self.enemy) == 0:
+            self.waveCounter = 0
+            self.waveState = 0
+
+        
+         
+#draw each enemy in list
+        for enemy in self.enemy:
+            if self.waveState == 0:
+                enemy.setValue(100, 10, 1)
+            if self.waveState == 1:
+                enemy.setValue(150, 15, 1.25)
+            if self.waveState == 2:
+                enemy.setValue(200, 20, 2.5)
+
+            enemy.x = enemy.x + (enemy.xspeed * enemy.speedIncrease)
+            enemy.y = enemy.y + (enemy.yspeed * enemy.speedIncrease)
+            enemy.draw(enemy_sprite, self.screen)
+
+
+
+    
+            
+#base health mechanism
+            if enemy.x >= self.width:
+                self.enemy.remove(enemy)
+                self.lives -= 1
+#enemy death mechanism
+        
+
+        
+
+            
+                    
+
+#path              
+            enemy.path()
+
+            for i in self.array.getPosition():
+                
+                dist = math.sqrt((i[0]- enemy.x)**2 + (i[1]-enemy.y)**2)
+                if (dist < 100):
+                    enemy.health -= 100
+
+                if enemy.health <= 0:
+                    self.enemy.remove(enemy)
+                    self.money += enemy.money
+
+                    
+
+                
+
 
         # draw lives
         text = self.lifefont.render(str(self.lives), 1, (255,255,255))
@@ -87,6 +177,8 @@ class Game():
         money = pygame.transform.scale(money_image, (30, 30))
         self.screen.blit(moneytext, ((place - 40), 60))
         self.screen.blit(money, (place + 5, 55))
+
+ 
         
 
         # draw menu
